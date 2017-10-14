@@ -14,20 +14,20 @@
     <!--&lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
 
-    <!--&lt;!&ndash; jQuery library &ndash;&gt;-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-
     <!--&lt;!&ndash; Latest compiled JavaScript &ndash;&gt;-->
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 
-    <!-- Red Black Tree Javascript file-->
-    <script src="redblacktree.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.7/docs/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="bootstrap-3.3.7/docs/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Red Black Tree Javascript file-->
+    <script src="redblacktree.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="bootstrap-template.css" rel="stylesheet">
@@ -65,14 +65,29 @@
     </nav>
 
     <div class="container">
-
         <div class="starter-template">
             <h1>Bootstrap starter template</h1>
             <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a
                 mostly barebones HTML document.</p>
         </div>
-
     </div><!-- /.container -->
+
+    <div class="container">
+        <div class="insert-delete">
+            <h1>Insert</h1>
+            <input id="insert" placeholder=0 type="number">
+        </div>
+
+        <div>
+            <h1>Delete</h1>
+            <input id="delete" placeholder=0 type="number">
+        </div>
+
+        <div>
+            <h1 id="output"></h1>
+        </div>
+
+    </div>
 
 
     <!-- Bootstrap core JavaScript
