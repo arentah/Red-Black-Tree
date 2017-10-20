@@ -3,8 +3,7 @@
  */
 
 $(document).ready(function(){
-
-    $('#insert').on('input', function(){ //insert function
+    $('#insert').on('input', function(){ //html insert function
         let text = $('#insert').val();
         let display = $('#output');
         text = parseInt(text, 10); //remove leading zeros
@@ -13,15 +12,19 @@ $(document).ready(function(){
         }
         else{
             display.text(text);
-
         }
     });
 });
+
+var red = 'red';
+var black = 'black';
 
 function Node(value){
     this.value = value;
     this.left = null;
     this.right = null;
+    this.color = red;
+    this.parent = null;
 }
 
 function BST(){
@@ -50,9 +53,8 @@ BST.prototype.push = function(value){
                 current.right = newNode;
                 break;
             }
-            else{
+            else
                 current = current.right; //if current.right is not null traverse to this node
-            }
         }
     }
 };
@@ -60,19 +62,100 @@ BST.prototype.push = function(value){
 function inOrder(node){ //display inorder traversal
     if(node){
         inOrder(node.left);
-        console.log(node.value);
+        if(node.parent == null){
+            node.parent = "null";
+        }
+        console.log("the value of node is: " + node.value + ", color is: " + node.color + " parent of node is: " + node.parent.value  );
         inOrder(node.right);
     }
 }
 
-let bst = new BST();
-bst.push(3);
-bst.push(2);
-bst.push(4);
-bst.push(1);
-bst.push(5);
+// let bst = new BST();
+// bst.push(3);
+// bst.push(2);
+// bst.push(4);
+// bst.push(1);
+// bst.push(5);
+//
+// inOrder(bst.root);
 
-inOrder(bst.root);
+
+function RBT(){
+    this.root = null;
+}
+
+RBT.prototype.push = function(value){
+
+    let root = this.root;
+    if(!root){
+       this.root = new Node(value);
+       this.root.color = black;
+       this.root.parent = null;
+       return;
+    }
+
+    let temp = root;
+    let newNode = new Node(value);
+
+    while(true){
+        if(value < temp.value){ //if value is smaller than current add to left
+            newNode.parent = temp;
+            if(!temp.left){
+                temp.left = newNode;
+                break;
+            }
+            else{
+                temp = temp.left; //if current.left is not null traverse to this node
+            }
+        }
+        else{
+            newNode.parent = temp;
+            if(!temp.right){ //if value is larger than current add to right
+                temp.right = newNode;
+                break;
+            }
+            else{
+                temp = temp.right; //if current.right is not null traverse to this node
+            }
+        }
+    }
+
+
+    let parent = newNode.parent;
+    let uncle;
+    let gpa;
+    if(parent.parent != null ){
+        gpa = parent.parent;
+        if(parent.value < gpa.value){
+            uncle = gpa.right;
+        }
+        else{
+            uncle = gpa.left;
+        }
+    }
+
+    if(red == parent.color  && red == uncle.color){
+        parent.color = black;
+        uncle.color = black;
+        gpa.color = red;
+    }
+
+
+    this.root.color = black;
+};
+
+
+let redBlack = new RBT();
+redBlack.push(10);
+redBlack.push(15);
+redBlack.push(5);
+redBlack.push(3);
+
+inOrder(redBlack.root);
+
+
+
+
 
 
 // ----- Testing Area Below -----
