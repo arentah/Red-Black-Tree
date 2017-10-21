@@ -122,7 +122,6 @@ RBT.prototype.push = function(value){
         }
     }
 
-
     let parent = newNode.parent;
     let uncle;
     let gpa;
@@ -136,24 +135,25 @@ RBT.prototype.push = function(value){
         }
     }
 
-    if(red == parent.color  && red == uncle.color){
+
+    if(red == parent.color && null == uncle){
+        redBlack.leftRotate(gpa);
+    }
+    else if(red == parent.color && black == uncle.color){
+
+    }
+    else if(red == parent.color  && red == uncle.color){
         parent.color = black;
         uncle.color = black;
         gpa.color = red;
 
         redBlack.reCheck(gpa);
     }
-    else if(red == parent.color && black == uncle.color){
-
-
-    }
     this.root.color = black;
 };
 
 RBT.prototype.reCheck = function(grand){
-
     if(grand.parent != null) {
-
         while (true) {
             let currentNode = grand;
             let parent = currentNode.parent;
@@ -169,7 +169,6 @@ RBT.prototype.reCheck = function(grand){
                     uncle = gpa.left;
                 }
             }
-
             if (red == parent.color && red == uncle.color) {
                 parent.color = black;
                 uncle.color = black;
@@ -180,8 +179,40 @@ RBT.prototype.reCheck = function(grand){
             else
                 break;
         }
-
     }
+};
+
+RBT.prototype.leftRotate = function(grand) {
+
+    let gpa = grand;
+    let parent = gpa.right;
+    let gpaParent;
+
+    if(gpa.parent != null){
+        gpaParent = grand.parent;
+
+        if(gpaParent.value < parent){
+            gpaParent.right = parent;
+            parent.parent = gpaParent;
+        }
+        else{
+            gpaParent.left = parent;
+            parent.parent = gpaParent
+        }
+    }
+    else{
+        this.root = parent;
+        parent.parent = null;
+    }
+
+    if(parent.left != null){
+        gpa.right = parent.left;
+    }
+    else{
+        gpa.right = null;
+    }
+    gpa.parent = parent;
+    parent.left = gpa;
 
 };
 
@@ -191,11 +222,16 @@ redBlack.push(50);
 redBlack.push(25);
 redBlack.push(75);
 redBlack.push(100);
-redBlack.push(60);
-redBlack.push(10);
-redBlack.push(35);
-redBlack.push(1);
-redBlack.push(68);
+redBlack.push(150);
+// redBlack.push(60);
+// redBlack.push(10);
+// redBlack.push(35);
+// redBlack.push(1);
+// redBlack.push(68);
+// redBlack.push(10);
+// redBlack.push(15);
+// redBlack.push(20);
+
 
 
 inOrder(redBlack.root);
