@@ -138,7 +138,7 @@ RBT.prototype.push = function(value){
 
     if(red == parent.color && null == uncle){
 
-        redBlack.leftRotate(gpa);
+        redBlack.leftRotate(newNode);
     }
     else if(red == parent.color && black == uncle.color){
 
@@ -183,55 +183,88 @@ RBT.prototype.reCheck = function(grand){
     }
 };
 
-RBT.prototype.leftRotate = function(grand) {
-    let gpa = grand;
-    let parent = gpa.right;
-    let gpaParent;
+RBT.prototype.leftRotate = function(node) {
 
-    if(gpa.parent != null){
-        gpaParent = grand.parent;
-        if(gpaParent.value < parent.value){
-            gpaParent.right = parent;
-            parent.parent = gpaParent;
+    if(node.value > node.parent.value && node.value < node.parent.parent.value){
+        
+    }
+    else if(node.value > node.parent && node.parent.value > node.parent.parent.value){
+        let gpa = node.parent.parent;
+        let parent = gpa.right;
+        let gpaParent;
+
+        if(gpa.parent != null){
+            gpaParent = gpa.parent;
+            if(gpaParent.value < parent.value){
+                gpaParent.right = parent;
+                parent.parent = gpaParent;
+            }
+            else{
+                gpaParent.left = parent;
+                parent.parent = gpaParent;
+            }
         }
         else{
-            gpaParent.left = parent;
-            parent.parent = gpaParent;
+            this.root = parent;
+            parent.parent = null;
         }
-    }
-    else{
-        this.root = parent;
-        parent.parent = null;
-    }
-
-    if(parent.left != null){
-        gpa.right = parent.left;
-        parent.left.parent = gpa;
-    }
-    else{
-        gpa.right = null;
+        if(parent.left != null){
+            gpa.right = parent.left;
+            parent.left.parent = gpa;
+        }
+        else{
+            gpa.right = null;
+        }
+        gpa.parent = parent;
+        parent.left = gpa;
     }
 
-    gpa.parent = parent;
-    parent.left = gpa;
+    // let gpa = node.parent.parent;
+    // let parent = gpa.right;
+    // let gpaParent;
+    //
+    // if(gpa.parent != null){
+    //     gpaParent = gpa.parent;
+    //     if(gpaParent.value < parent.value){
+    //         gpaParent.right = parent;
+    //         parent.parent = gpaParent;
+    //     }
+    //     else{
+    //         gpaParent.left = parent;
+    //         parent.parent = gpaParent;
+    //     }
+    // }
+    // else{
+    //     this.root = parent;
+    //     parent.parent = null;
+    // }
+    //
+    // if(parent.left != null){
+    //     gpa.right = parent.left;
+    //     parent.left.parent = gpa;
+    // }
+    // else{
+    //     gpa.right = null;
+    // }
+    //
+    // gpa.parent = parent;
+    // parent.left = gpa;
 };
 
 
 let redBlack = new RBT();
-redBlack.push(10);
-redBlack.push(20);
-redBlack.push(30);
-
-// redBlack.push(60);
 // redBlack.push(10);
-// redBlack.push(35);
-// redBlack.push(1);
-// redBlack.push(68);
+// redBlack.push(5);
+// redBlack.push(8);
 // redBlack.push(10);
-// redBlack.push(15);
+// redBlack.push(5);
 // redBlack.push(20);
-
-
+// redBlack.push(15);
+redBlack.push(50);
+redBlack.push(25);
+redBlack.push(75);
+redBlack.push(100);
+redBlack.push(150);
 
 inOrder(redBlack.root);
 
