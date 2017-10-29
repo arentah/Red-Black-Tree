@@ -111,11 +111,100 @@ RBT.prototype.push = function(value){
             }
         }
     }
-    let parent = newNode.parent;
+    // let parent = newNode.parent;
+    // let uncle;
+    // let gpa;
+    // let side;
+    //
+    // if(parent.parent != null ){
+    //     gpa = parent.parent;
+    //     if(parent.value < gpa.value){
+    //         uncle = gpa.right;
+    //         side = 0;
+    //     }
+    //     else{
+    //         uncle = gpa.left;
+    //         side = 1;
+    //     }
+    // }
+    //
+    // if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
+    //     if(side == 0){
+    //         if(newNode.value > parent.value){       //case 1
+    //             redBlack.leftRotate(newNode);
+    //             redBlack.rightRotate(newNode.left);
+    //             newNode = newNode.left;
+    //         }
+    //         else if (newNode.value < parent.value){     //case 2
+    //             redBlack.rightRotate(newNode);
+    //         }
+    //         let tempColor = newNode.parent.color;
+    //         newNode.parent.color = newNode.parent.right.color;
+    //         newNode.parent.right.color = tempColor;
+    //         //redBlack.reCheck();
+    //     }
+    //     else if(side == 1){
+    //         if(newNode.value > parent.value){       //case 3
+    //             redBlack.leftRotate(newNode);
+    //         }
+    //         else if (newNode.value < parent.value){     //case 4
+    //             redBlack.rightRotate(newNode);
+    //             redBlack.leftRotate(newNode.right);
+    //             newNode = newNode.right;
+    //         }
+    //         let tempColor = newNode.parent.color;
+    //         newNode.parent.color = newNode.parent.left.color;
+    //         newNode.parent.left.color = tempColor;
+    //     }
+    // }
+    // else if(red == parent.color  && red == uncle.color){
+    //
+    //     parent.color = black;
+    //     uncle.color = black;
+    //     gpa.color = red;
+    //     console.log("newnode: "+newNode.value+" parent: "+parent.value+" gpa: "+gpa.value);
+    //     redBlack.reCheck(gpa);
+    // }
+
+    redBlack.insertionCases(newNode);
+    this.root.color = black;
+};
+
+RBT.prototype.reCheck = function(grand){
+    console.log("recheck "+grand.value);
+    if(grand.parent != null) {
+        while (true) {
+            let parent = grand.parent;
+            // let gpa = parent.parent;
+            // let uncle;
+            // if (parent != null && gpa != null) {
+            //     if (parent.value < gpa.value) {
+            //         uncle = gpa.right;
+            //     }
+            //     else {
+            //         uncle = gpa.left;
+            //     }
+            // }
+            if (red == grand.color && red == parent.color){//(red == parent.color && red == uncle.color) {
+
+
+
+                // parent.color = black;
+                // uncle.color = black;
+                // gpa.color = red;
+                // redBlack.reCheck(gpa);
+            }
+            else
+                break;
+        }
+    }
+};
+
+RBT.prototype.insertionCases = function(currentNode){
+    let parent = currentNode.parent;
     let uncle;
     let gpa;
     let side;
-
     if(parent.parent != null ){
         gpa = parent.parent;
         if(parent.value < gpa.value){
@@ -130,66 +219,38 @@ RBT.prototype.push = function(value){
 
     if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
         if(side == 0){
-            if(newNode.value > parent.value){       //case 1
-                redBlack.leftRotate(newNode);
-                redBlack.rightRotate(newNode.left);
-                newNode = newNode.left;
+            if(currentNode.value > parent.value){       //case 1
+                redBlack.leftRotate(currentNode);
+                redBlack.rightRotate(currentNode.left);
+                currentNode = currentNode.left;
             }
-            else if (newNode.value < parent.value){     //case 2
-                redBlack.rightRotate(newNode);
+            else if (currentNode.value < parent.value){     //case 2
+                redBlack.rightRotate(currentNode);
             }
-            let tempColor = newNode.parent.color;
-            newNode.parent.color = newNode.parent.right.color;
-            newNode.parent.right.color = tempColor;
+            let tempColor = currentNode.parent.color;
+            currentNode.parent.color = currentNode.parent.right.color;
+            currentNode.parent.right.color = tempColor;
+            //redBlack.reCheck();
         }
         else if(side == 1){
-            if(newNode.value > parent.value){       //case 3
-                redBlack.leftRotate(newNode);
+            if(currentNode.value > parent.value){       //case 3
+                redBlack.leftRotate(currentNode);
             }
-            else if (newNode.value < parent.value){     //case 4
-                redBlack.rightRotate(newNode);
-                redBlack.leftRotate(newNode.right);
-                newNode = newNode.right;
+            else if (currentNode.value < parent.value){     //case 4
+                redBlack.rightRotate(currentNode);
+                redBlack.leftRotate(currentNode.right);
+                currentNode = currentNode.right;
             }
-            let tempColor = newNode.parent.color;
-            newNode.parent.color = newNode.parent.left.color;
-            newNode.parent.left.color = tempColor;
-
+            let tempColor = currentNode.parent.color;
+            currentNode.parent.color = currentNode.parent.left.color;
+            currentNode.parent.left.color = tempColor;
         }
     }
     else if(red == parent.color  && red == uncle.color){
         parent.color = black;
         uncle.color = black;
         gpa.color = red;
-        redBlack.reCheck(gpa);
-    }
-    this.root.color = black;
-};
-
-RBT.prototype.reCheck = function(grand){
-    if(grand.parent != null) {
-        while (true) {
-            //let currentNode = grand;
-            let parent = grand.parent;//currentNode.parent;
-            let gpa = parent.parent;
-            let uncle;
-            if (parent != null && gpa != null) {
-                if (parent.value < gpa.value) {
-                    uncle = gpa.right;
-                }
-                else {
-                    uncle = gpa.left;
-                }
-            }
-            if (red == parent.color && red == uncle.color) {
-                parent.color = black;
-                uncle.color = black;
-                gpa.color = red;
-                redBlack.reCheck(gpa);
-            }
-            else
-                break;
-        }
+        //redBlack.reCheck(gpa);
     }
 };
 
@@ -290,37 +351,31 @@ RBT.prototype.leftRotate = function(node) {
 };
 
 let redBlack = new RBT();
-// redBlack.push(10);
-// redBlack.push(1);
-// redBlack.push(5);
-
-// redBlack.push(10);
-// redBlack.push(3);
-// redBlack.push(8);
-
-// redBlack.push(10);
-// redBlack.push(15);
-// redBlack.push(12);
-
-// redBlack.push(10);
+// redBlack.push(50);
+// redBlack.push(45);
+// redBlack.push(55);
+// redBlack.push(48);
+// redBlack.push(35);
+// redBlack.push(52);
+// redBlack.push(60);
 // redBlack.push(20);
-// redBlack.push(30);
 
-// redBlack.push(-1);
-// redBlack.push(10);
-// redBlack.push(15);
-// redBlack.push(5);
-// redBlack.push(8);
-// redBlack.push(1);
-
-
-redBlack.push(10);
-redBlack.push(20);
+redBlack.push(50);
+redBlack.push(25);
+redBlack.push(75);
 redBlack.push(15);
+redBlack.push(20);
 
 
 
-
+// redBlack.push(100);
+// redBlack.push(50);
+// redBlack.push(111);
+// redBlack.push(25);
+// redBlack.push(12);
+// redBlack.push(13);
+// redBlack.push(14);
+// redBlack.push(15);
 
 
 inOrder(redBlack.root);
