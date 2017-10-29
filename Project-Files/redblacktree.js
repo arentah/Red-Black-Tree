@@ -76,7 +76,7 @@ function RBT(){
     this.root = null;
 }
 
-RBT.prototype.push = function(value){
+RBT.prototype.insert = function(value){
 
     let root = this.root;
     if(!root){
@@ -171,29 +171,12 @@ RBT.prototype.push = function(value){
 };
 
 RBT.prototype.reCheck = function(grand){
-    console.log("recheck "+grand.value);
+
     if(grand.parent != null) {
         while (true) {
             let parent = grand.parent;
-            // let gpa = parent.parent;
-            // let uncle;
-            // if (parent != null && gpa != null) {
-            //     if (parent.value < gpa.value) {
-            //         uncle = gpa.right;
-            //     }
-            //     else {
-            //         uncle = gpa.left;
-            //     }
-            // }
-            if (red == grand.color && red == parent.color){//(red == parent.color && red == uncle.color) {
-
-
-
-                // parent.color = black;
-                // uncle.color = black;
-                // gpa.color = red;
-                // redBlack.reCheck(gpa);
-            }
+            if (red == grand.color && red == parent.color)
+                redBlack.insertionCases(grand);
             else
                 break;
         }
@@ -216,7 +199,6 @@ RBT.prototype.insertionCases = function(currentNode){
             side = 1;
         }
     }
-
     if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
         if(side == 0){
             if(currentNode.value > parent.value){       //case 1
@@ -230,7 +212,7 @@ RBT.prototype.insertionCases = function(currentNode){
             let tempColor = currentNode.parent.color;
             currentNode.parent.color = currentNode.parent.right.color;
             currentNode.parent.right.color = tempColor;
-            //redBlack.reCheck();
+            redBlack.reCheck(gpa);
         }
         else if(side == 1){
             if(currentNode.value > parent.value){       //case 3
@@ -244,13 +226,14 @@ RBT.prototype.insertionCases = function(currentNode){
             let tempColor = currentNode.parent.color;
             currentNode.parent.color = currentNode.parent.left.color;
             currentNode.parent.left.color = tempColor;
+            redBlack.reCheck(gpa);
         }
     }
     else if(red == parent.color  && red == uncle.color){
         parent.color = black;
         uncle.color = black;
         gpa.color = red;
-        //redBlack.reCheck(gpa);
+        redBlack.reCheck(gpa);
     }
 };
 
@@ -351,31 +334,25 @@ RBT.prototype.leftRotate = function(node) {
 };
 
 let redBlack = new RBT();
-// redBlack.push(50);
-// redBlack.push(45);
-// redBlack.push(55);
-// redBlack.push(48);
-// redBlack.push(35);
-// redBlack.push(52);
-// redBlack.push(60);
-// redBlack.push(20);
+// redBlack.insert(50);
+// redBlack.insert(45);
+// redBlack.insert(55);
+// redBlack.insert(48);
+// redBlack.insert(35);
+// redBlack.insert(52);
+// redBlack.insert(60);
+// redBlack.insert(20);
 
-redBlack.push(50);
-redBlack.push(25);
-redBlack.push(75);
-redBlack.push(15);
-redBlack.push(20);
+redBlack.insert(50);
+redBlack.insert(100);
+redBlack.insert(25);
+redBlack.insert(250);
+redBlack.insert(175);
+redBlack.insert(120);
+redBlack.insert(200);
+redBlack.insert(225);
+redBlack.insert(240);
 
-
-
-// redBlack.push(100);
-// redBlack.push(50);
-// redBlack.push(111);
-// redBlack.push(25);
-// redBlack.push(12);
-// redBlack.push(13);
-// redBlack.push(14);
-// redBlack.push(15);
 
 
 inOrder(redBlack.root);
