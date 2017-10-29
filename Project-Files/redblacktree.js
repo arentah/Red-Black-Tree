@@ -111,60 +111,6 @@ RBT.prototype.insert = function(value){
             }
         }
     }
-    // let parent = newNode.parent;
-    // let uncle;
-    // let gpa;
-    // let side;
-    //
-    // if(parent.parent != null ){
-    //     gpa = parent.parent;
-    //     if(parent.value < gpa.value){
-    //         uncle = gpa.right;
-    //         side = 0;
-    //     }
-    //     else{
-    //         uncle = gpa.left;
-    //         side = 1;
-    //     }
-    // }
-    //
-    // if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
-    //     if(side == 0){
-    //         if(newNode.value > parent.value){       //case 1
-    //             redBlack.leftRotate(newNode);
-    //             redBlack.rightRotate(newNode.left);
-    //             newNode = newNode.left;
-    //         }
-    //         else if (newNode.value < parent.value){     //case 2
-    //             redBlack.rightRotate(newNode);
-    //         }
-    //         let tempColor = newNode.parent.color;
-    //         newNode.parent.color = newNode.parent.right.color;
-    //         newNode.parent.right.color = tempColor;
-    //         //redBlack.reCheck();
-    //     }
-    //     else if(side == 1){
-    //         if(newNode.value > parent.value){       //case 3
-    //             redBlack.leftRotate(newNode);
-    //         }
-    //         else if (newNode.value < parent.value){     //case 4
-    //             redBlack.rightRotate(newNode);
-    //             redBlack.leftRotate(newNode.right);
-    //             newNode = newNode.right;
-    //         }
-    //         let tempColor = newNode.parent.color;
-    //         newNode.parent.color = newNode.parent.left.color;
-    //         newNode.parent.left.color = tempColor;
-    //     }
-    // }
-    // else if(red == parent.color  && red == uncle.color){
-    //
-    //     parent.color = black;
-    //     uncle.color = black;
-    //     gpa.color = red;
-    //     console.log("newnode: "+newNode.value+" parent: "+parent.value+" gpa: "+gpa.value);
-    //     redBlack.reCheck(gpa);
-    // }
 
     redBlack.insertionCases(newNode);
     this.root.color = black;
