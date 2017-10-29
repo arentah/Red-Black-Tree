@@ -129,26 +129,34 @@ RBT.prototype.push = function(value){
     }
 
     if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
-
         if(side == 0){
-            if(newNode.value > parent.value)
+            if(newNode.value > parent.value){       //case 1
                 redBlack.leftRotate(newNode);
-            else if (newNode.value < parent.value)
+                redBlack.rightRotate(newNode.left);
+                newNode = newNode.left;
+            }
+            else if (newNode.value < parent.value){     //case 2
                 redBlack.rightRotate(newNode);
+            }
+            let tempColor = newNode.parent.color;
+            newNode.parent.color = newNode.parent.right.color;
+            newNode.parent.right.color = tempColor;
         }
         else if(side == 1){
-            if(newNode.value > parent.value)
+            if(newNode.value > parent.value){       //case 3
                 redBlack.leftRotate(newNode);
-            else if (newNode.value < parent.value)
+            }
+            else if (newNode.value < parent.value){     //case 4
                 redBlack.rightRotate(newNode);
+                redBlack.leftRotate(newNode.right);
+                newNode = newNode.right;
+            }
+            let tempColor = newNode.parent.color;
+            newNode.parent.color = newNode.parent.left.color;
+            newNode.parent.left.color = tempColor;
+
         }
     }
-    // else if(red == parent.color && black == uncle.color){
-    //     if(side == 0)
-    //         redBlack.rightRotate(newNode);
-    //     else
-    //         redBlack.leftRotate(newNode);
-    // }
     else if(red == parent.color  && red == uncle.color){
         parent.color = black;
         uncle.color = black;
@@ -165,7 +173,6 @@ RBT.prototype.reCheck = function(grand){
             let parent = grand.parent;//currentNode.parent;
             let gpa = parent.parent;
             let uncle;
-
             if (parent != null && gpa != null) {
                 if (parent.value < gpa.value) {
                     uncle = gpa.right;
@@ -307,9 +314,10 @@ let redBlack = new RBT();
 // redBlack.push(1);
 
 
-redBlack.push(25);
-redBlack.push(35);
-redBlack.push(45);
+redBlack.push(10);
+redBlack.push(20);
+redBlack.push(15);
+
 
 
 
