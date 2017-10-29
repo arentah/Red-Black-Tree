@@ -120,9 +120,6 @@ RBT.prototype.push = function(value){
         gpa = parent.parent;
         if(parent.value < gpa.value){
             uncle = gpa.right;
-
-            if(newNode.value == 1)
-                uncle.color = black;
             side = 0;
         }
         else{
@@ -133,10 +130,18 @@ RBT.prototype.push = function(value){
 
     if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
 
-        if(side == 0)
-            redBlack.rightRotate(newNode);
-        else
-            redBlack.leftRotate(newNode);
+        if(side == 0){
+            if(newNode.value > parent.value)
+                redBlack.leftRotate(newNode);
+            else if (newNode.value < parent.value)
+                redBlack.rightRotate(newNode);
+        }
+        else if(side == 1){
+            if(newNode.value > parent.value)
+                redBlack.leftRotate(newNode);
+            else if (newNode.value < parent.value)
+                redBlack.rightRotate(newNode);
+        }
     }
     // else if(red == parent.color && black == uncle.color){
     //     if(side == 0)
@@ -182,12 +187,10 @@ RBT.prototype.reCheck = function(grand){
 };
 
 RBT.prototype.rightRotate = function(node){
-    if(node.value < node.parent.value && node.value > node.parent.parent.value){
-
+    if( (node.value < node.parent.value) && (node.value > node.parent.parent.value) ){
         let parent = node.parent;
         let gpa = parent.parent;
         let nodeRightChild = node.right;
-
         if(nodeRightChild != null){         //this scenario should never happen
             parent.left = nodeRightChild;
         }
@@ -199,12 +202,10 @@ RBT.prototype.rightRotate = function(node){
         gpa.right = node;
         node.parent = gpa;
     }
-    else if(node.value < node.parent.value && node.parent.value < node.parent.parent.value){
-
+    else if( (node.value < node.parent.value) && (node.value < node.parent.parent.value) ){
         let parent = node.parent; //node.parent;
         let gpa = parent.parent;
         let gpaParent;
-
         if(gpa.parent != null){
             gpaParent = gpa.parent;
             if(gpaParent.value < parent.value){
@@ -233,9 +234,7 @@ RBT.prototype.rightRotate = function(node){
 };
 
 RBT.prototype.leftRotate = function(node) {
-
-    if(node.value > node.parent.value && node.value < node.parent.parent.value){
-
+    if( (node.value > node.parent.value) && (node.value < node.parent.parent.value) ){
         let parent = node.parent;
         let gpa = parent.parent;
         let nodeLeftChild = node.left;
@@ -247,19 +246,15 @@ RBT.prototype.leftRotate = function(node) {
         else{                                  //this one should happen
             parent.right = null;
         }
-
         node.left = parent;
         parent.parent = node;
         gpa.left = node;
         node.parent = gpa;
-
     }
-    else if(node.value > node.parent.value && node.parent.value > node.parent.parent.value){
-
+    else if( (node.value > node.parent.value) && (node.value > node.parent.parent.value) ){
         let parent = node.parent;//gpa.right;
         let gpa = parent.parent;
         let gpaParent;
-
         if(gpa.parent != null){
             gpaParent = gpa.parent;
             if(gpaParent.value < parent.value){
@@ -287,8 +282,11 @@ RBT.prototype.leftRotate = function(node) {
     }
 };
 
-
 let redBlack = new RBT();
+// redBlack.push(10);
+// redBlack.push(1);
+// redBlack.push(5);
+
 // redBlack.push(10);
 // redBlack.push(3);
 // redBlack.push(8);
@@ -308,16 +306,14 @@ let redBlack = new RBT();
 // redBlack.push(8);
 // redBlack.push(1);
 
-// redBlack.push(50);
-// redBlack.push(25);
-// redBlack.push(75);
-// redBlack.push(100);
-// redBlack.push(150);
 
-redBlack.push(10);
-redBlack.push(5);
-redBlack.push(15);
-redBlack.push(1);
+redBlack.push(25);
+redBlack.push(35);
+redBlack.push(45);
+
+
+
+
 
 inOrder(redBlack.root);
 

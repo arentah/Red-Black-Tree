@@ -28,8 +28,8 @@
       <file leaf-file-name="redblacktree.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/redblacktree.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="134" column="0" lean-forward="true" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+            <state relative-caret-position="287">
+              <caret line="138" column="27" lean-forward="false" selection-start-line="138" selection-start-column="27" selection-end-line="138" selection-end-column="27" />
               <folding>
                 <element signature="e#0#41#0" expanded="false" />
               </folding>
@@ -61,6 +61,8 @@
     <findStrings>
       <find>leftChild</find>
       <find>child</find>
+      <find>here</find>
+      <find>here3</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -229,15 +231,15 @@
       <workItem from="1508812527121" duration="2260000" />
       <workItem from="1508899988400" duration="3890000" />
       <workItem from="1508989263458" duration="618000" />
-      <workItem from="1509297794156" duration="2007000" />
+      <workItem from="1509297794156" duration="7826000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53600000" />
+    <option name="totallyTimeSpent" value="59419000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3" y="24" width="1351" height="685" extended-state="1" />
+    <frame x="3" y="24" width="1351" height="685" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15955056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -583,8 +585,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/redblacktree.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="134" column="0" lean-forward="true" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+        <state relative-caret-position="287">
+          <caret line="138" column="27" lean-forward="false" selection-start-line="138" selection-start-column="27" selection-end-line="138" selection-end-column="27" />
           <folding>
             <element signature="e#0#41#0" expanded="false" />
           </folding>
