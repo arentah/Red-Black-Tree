@@ -2,6 +2,7 @@
  * Created by Aren on 10/14/2017.
  */
 
+//On Document Load
 $(document).ready(function(){
     $('#insert').on('input', function(){ //html insert function
         let text = $('#insert').val();
@@ -14,52 +15,35 @@ $(document).ready(function(){
             display.text(text);
         }
     });
+
+    $('#go').on('click',function(){
+        
+        let input = $('#insert').val();
+        
+        input = parseInt(input, 10); //remove leading zeros
+        if(isNaN(input)){ //check if input is not a number
+            console.log("Not a number..." + input);
+        }
+        else{
+            redBlack.insert(input);
+            console.log("Inputted number: "+ input);
+        }
+    });
+
+    $('#display').on("click",function(){
+
+        inOrder(redBlack.root);
+
+    });
+
 });
 
+//Global Variables
 var red = 'red';
 var black = 'black';
 
-function Node(value){
-    this.value = value;
-    this.left = null;
-    this.right = null;
-    this.color = red;
-    this.parent = null;
-}
-
-function BST(){
-    this.root = null;
-}
-
-BST.prototype.push = function(value){
-    let root = this.root;
-    if(!root){ //if root is null add value as root and return
-        this.root = new Node(value);
-        return;
-    }
-    let current = root;
-    let newNode = new Node(value);
-    while(true){
-        if(value < current.value){ //if value is smaller than current add to left
-            if(!current.left){
-                current.left = newNode;
-                break;
-            }
-            else
-                current = current.left; //if current.left is not null traverse to this node
-        }
-        else{
-            if(!current.right){ //if value is larger than current add to right
-                current.right = newNode;
-                break;
-            }
-            else
-                current = current.right; //if current.right is not null traverse to this node
-        }
-    }
-};
-
-function inOrder(node){ //display inorder traversal
+//Display Inorder Traversal
+function inOrder(node){
     if(node){
         inOrder(node.left);
         if(node.parent == null){
@@ -72,12 +56,21 @@ function inOrder(node){ //display inorder traversal
     }
 }
 
+//RBT "Class"
 function RBT(){
     this.root = null;
 }
 
-RBT.prototype.insert = function(value){
+function Node(value){
+    this.value = value;
+    this.left = null;
+    this.right = null;
+    this.color = red;
+    this.parent = null;
+}
 
+//RBT Insertion
+RBT.prototype.insert = function(value){
     let root = this.root;
     if(!root){
        this.root = new Node(value);
@@ -85,10 +78,8 @@ RBT.prototype.insert = function(value){
        this.root.parent = null;
        return;
     }
-
     let temp = root;
     let newNode = new Node(value);
-
     while(true){
         if(value < temp.value){ //if value is smaller than current add to left
             newNode.parent = temp;
@@ -111,25 +102,25 @@ RBT.prototype.insert = function(value){
             }
         }
     }
-
-    redBlack.insertionCases(newNode);
+    redBlack.insertionHelper(newNode);
     this.root.color = black;
 };
 
+//RBT Recheck
 RBT.prototype.reCheck = function(grand){
 
     if(grand.parent != null) {
         while (true) {
             let parent = grand.parent;
             if (red == grand.color && red == parent.color)
-                redBlack.insertionCases(grand);
+                redBlack.insertionHelper(grand);
             else
                 break;
         }
     }
 };
 
-RBT.prototype.insertionCases = function(currentNode){
+RBT.prototype.insertionHelper = function(currentNode){
     let parent = currentNode.parent;
     let uncle;
     let gpa;
@@ -289,19 +280,27 @@ let redBlack = new RBT();
 // redBlack.insert(60);
 // redBlack.insert(20);
 
-redBlack.insert(50);
-redBlack.insert(100);
-redBlack.insert(25);
-redBlack.insert(250);
-redBlack.insert(175);
-redBlack.insert(120);
-redBlack.insert(200);
-redBlack.insert(225);
-redBlack.insert(240);
+// redBlack.insert(50);
+// redBlack.insert(100);
+// redBlack.insert(25);
+// redBlack.insert(250);
+// redBlack.insert(175);
+// redBlack.insert(120);
+// redBlack.insert(200);
+// redBlack.insert(225);
+// redBlack.insert(240);
+// redBlack.insert(235);
+// redBlack.insert(238);
+//
+//
+//
+// redBlack.insert(5);
+// redBlack.insert(10);
+// redBlack.insert(12);
+//
+// inOrder(redBlack.root);
 
 
-
-inOrder(redBlack.root);
 
 // ----- Testing Area Below -----
 

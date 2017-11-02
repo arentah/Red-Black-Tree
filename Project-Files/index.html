@@ -7,9 +7,9 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="bootstrap-3.3.7/docs/favicon.ico">
+    <link rel="icon" href="bootstrap-3.3.7/docs/favicon-red-black.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Red Black Tree</title>
 
     <!--&lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
@@ -66,28 +66,36 @@
 
     <div class="container">
         <div class="starter-template">
-            <h1>Bootstrap starter template</h1>
-            <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a
-                mostly barebones HTML document.</p>
+            <h1>Red Black Tree</h1>
+            <p class="lead">Please input values into the Red Black Tree. Deletion can be accomplished as well.</p>
         </div>
     </div><!-- /.container -->
 
     <div class="container">
         <div class="insert-delete">
-            <h1>Insert</h1>
-            <input id="insert" placeholder=0 type="number">
+            <h2>Insert</h2>
+            <input id="insert" placeholder=0 type="text">
         </div>
 
-        <div>
-            <h1>Delete</h1>
-            <input id="delete" placeholder=0 type="number">
+        <div class="insert-delete">
+            <h2>Delete</h2>
+            <input id="delete" placeholder=0 type="text">
         </div>
 
-        <div>
+        <div class="insert-delete">
+            <!--<button type="button" class="btn btn-outline-primary btn-lg">Insert</button>-->
+            <button id="go" class="button btn btn-default btn-lg" type="button" onclick="">Go!</button>
+            <button id="display" class="button btn btn-default btn-lg" type="button" >Display</button>
+        </div>
+
+        <div class="insert-delete">
             <h1 id="output"></h1>
         </div>
 
+
+
     </div>
+
 
 
     <!-- Bootstrap core JavaScript
