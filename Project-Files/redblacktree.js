@@ -17,25 +17,19 @@ $(document).ready(function(){
     });
 
     $('#go').on('click',function(){
-        
         let input = $('#insert').val();
-        
         input = parseInt(input, 10); //remove leading zeros
         if(isNaN(input)){ //check if input is not a number
             console.log("Not a number..." + input);
         }
         else{
             redBlack.insert(input);
-            console.log("Inputted number: "+ input);
         }
     });
 
     $('#display').on("click",function(){
-
         inOrder(redBlack.root);
-
     });
-
 });
 
 //Global Variables
@@ -47,11 +41,14 @@ function inOrder(node){
     if(node){
         inOrder(node.left);
         if(node.parent == null){
-            node.parent = {
-                value: "root"
-            }
+            // node.parent = {
+            //     value: "root"
+            // }
+            console.log("the value of node is: " + node.value + ", color is: " + node.color + ", parent of node is: no parent, it's root");
         }
-        console.log("the value of node is: " + node.value + ", color is: " + node.color + ", parent of node is: " + node.parent.value  );
+        else{
+            console.log("the value of node is: " + node.value + ", color is: " + node.color + ", parent of node is: "+ node.parent.value );
+        }
         inOrder(node.right);
     }
 }
@@ -108,7 +105,6 @@ RBT.prototype.insert = function(value){
 
 //RBT Recheck
 RBT.prototype.reCheck = function(grand){
-
     if(grand.parent != null) {
         while (true) {
             let parent = grand.parent;
@@ -226,7 +222,6 @@ RBT.prototype.leftRotate = function(node) {
         let parent = node.parent;
         let gpa = parent.parent;
         let nodeLeftChild = node.left;
-
         if(nodeLeftChild != null){             //this scenario should never happen
             parent.right = nodeLeftChild;
             nodeLeftChild.parent = parent;
@@ -294,11 +289,10 @@ let redBlack = new RBT();
 //
 //
 //
-// redBlack.insert(5);
-// redBlack.insert(10);
-// redBlack.insert(12);
-//
-// inOrder(redBlack.root);
+redBlack.insert(1);
+redBlack.insert(11);
+redBlack.insert(111);
+inOrder(redBlack.root);
 
 
 
