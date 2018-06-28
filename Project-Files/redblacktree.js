@@ -54,8 +54,36 @@ function inOrder(node){
     }
 }
 
+//Get size of RBT
+function getSize(node){
+    let count = 0;
+    function getSizeHelper(node){
+        if(node){
+            getSizeHelper(node.left);
+            if(node.parent === null){
+                count++;
+            }
+            else{
+                count++;
+            }
+            getSizeHelper(node.right);
+        }
+    }
+    getSizeHelper(node);
+    return count;
+}
+
 //BFS Traversal
 function BFS(node){
+
+    if(node){
+
+
+
+    }else{
+        console.log("The tree is empty...");
+    }
+
     //Sample Queue
     //============
     /*var queue = [];
@@ -75,19 +103,22 @@ function BFS(node){
     }
     console.log(queue);*/
 
+
+
 }
 
-//RBT "Class"
-function RBT(){
-    this.root = null;
-}
-
+//Node Object
 function Node(value){
     this.value = value;
     this.left = null;
     this.right = null;
     this.color = red;
     this.parent = null;
+}
+
+//RBT "Class"
+function RBT(){
+    this.root = null;
 }
 
 //RBT Insertion
