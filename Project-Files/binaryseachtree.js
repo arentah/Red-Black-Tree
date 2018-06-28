@@ -39,10 +39,10 @@ BST.prototype.push = function(value){
     }
 };
 
-function inOrder(node){ //display inorder traversal
+function inOrderDisplay(node){ //display inorder traversal
     if(node){
         inOrder(node.left);
-        if(node.parent == null){
+        if(node.parent === null){
             node.parent = {
                 value: "root"
             }

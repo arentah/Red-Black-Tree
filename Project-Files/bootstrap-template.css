@@ -1,6 +1,12 @@
 body {
     padding-top: 50px;
 }
+
+#draw-shapes{
+    word-wrap: break-word;
+    margin-top: 35px;
+}
+
 .starter-template {
     padding: 40px 15px;
     text-align: center;
@@ -11,7 +17,6 @@ body {
     margin: 0 5px;
 }
 
-
 h2{
     margin-bottom: 0;
     margin-top: 0;
@@ -19,8 +24,4 @@ h2{
 
 .button{
     margin-bottom: 12px;
-}
-
-p.test{
-    color: red;
 }

@@ -1,6 +1,7 @@
 /**
  * Created by Aren on 10/14/2017.
  */
+let redBlack = new RBT();
 
 //On Document Load
 $(document).ready(function(){
@@ -33,14 +34,14 @@ $(document).ready(function(){
 });
 
 //Global Variables
-var red = 'red';
-var black = 'black';
+const red = 'red'; //changed from var
+const black = 'black'; //changed from var
 
-//Display Inorder Traversal
+//Display InOrder Traversal
 function inOrder(node){
     if(node){
         inOrder(node.left);
-        if(node.parent == null){
+        if(node.parent === null){
             // node.parent = {
             //     value: "root"
             // }
@@ -51,6 +52,29 @@ function inOrder(node){
         }
         inOrder(node.right);
     }
+}
+
+//BFS Traversal
+function BFS(node){
+    //Sample Queue
+    //============
+    /*var queue = [];
+    queue.push(2);
+    queue.push(5);
+    queue.push(8);
+    queue.push(12);
+    queue.push(15);
+    console.log(queue);
+    let head;
+    for(let i = 0; i < queue.length; i++){
+        head = queue.shift();
+        if(head !== undefined) {
+            i = -1;
+            console.log(head, "length: "+queue.length);
+        }
+    }
+    console.log(queue);*/
+
 }
 
 //RBT "Class"
@@ -265,7 +289,7 @@ RBT.prototype.leftRotate = function(node) {
     }
 };
 
-let redBlack = new RBT();
+//let redBlack = new RBT();
 // redBlack.insert(50);
 // redBlack.insert(45);
 // redBlack.insert(55);
@@ -289,10 +313,21 @@ let redBlack = new RBT();
 //
 //
 //
-redBlack.insert(1);
-redBlack.insert(11);
-redBlack.insert(111);
-inOrder(redBlack.root);
+//redBlack.insert(1);
+//redBlack.insert(11);
+//redBlack.insert(111);
+//inOrder(redBlack.root);
+
+var elem = document.getElementById('draw-shapes');
+var getWidth = document.getElementById("draw-shapes").offsetWidth;
+var params = { width: getWidth, height: 1500 };
+var two = new Two(params).appendTo(elem);
+
+var circle = two.makeCircle(Math.round(document.getElementById('draw-shapes').offsetWidth/2), 35, 25);
+circle.fill = 'red';
+
+two.update();
+
 
 
 

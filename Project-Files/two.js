@@ -492,7 +492,7 @@ this.Two = (function(previousTwo) {
             },
 
             /**
-             * Release an arbitrary class' events from the two.js corpus and recurse
+             * Release an arbitrary class' events from the Two.js corpus and recurse
              * through its children and or vertices.
              */
             release: function(obj) {
@@ -6329,7 +6329,7 @@ this.Two = (function(previousTwo) {
         this._vertices = [];
         this.vertices = vertices;
 
-        // Determines whether or not two.js should calculate curves, lines, and
+        // Determines whether or not Two.js should calculate curves, lines, and
         // commands automatically for you or to let the developer manipulate them
         // for themselves.
         this.automatic = !manual;
