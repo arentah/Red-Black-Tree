@@ -29,7 +29,8 @@ $(document).ready(function(){
     });
 
     $('#display').on("click",function(){
-        inOrder(redBlack.root);
+        console.log(BFS(redBlack.root));
+        //inOrder(redBlack.root);
     });
 });
 
@@ -75,15 +76,23 @@ function getSize(node){
 
 //BFS Traversal
 function BFS(node){
-
-    if(node){
-
-
-
-    }else{
-        console.log("The tree is empty...");
+    let bfs = [];
+    let res = [];
+    let size = getSize(node);
+    if(size !== 0 ){
+        res.push(node);
+        while(res.length !== size){
+            if(node.left !== null){
+                bfs.push(node.left);
+            }
+            if(node.right !== null){
+                bfs.push(node.right);
+            }
+            node = bfs.shift();
+            res.push(node);
+        }
     }
-
+    return res;
     //Sample Queue
     //============
     /*var queue = [];
@@ -102,9 +111,6 @@ function BFS(node){
         }
     }
     console.log(queue);*/
-
-
-
 }
 
 //Node Object
