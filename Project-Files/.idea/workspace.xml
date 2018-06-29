@@ -37,8 +37,8 @@
       <file leaf-file-name="RedBlackTree.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RedBlackTree.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="83" column="35" lean-forward="true" selection-start-line="83" selection-start-column="35" selection-end-line="83" selection-end-column="35" />
+            <state relative-caret-position="120">
+              <caret line="355" column="56" lean-forward="true" selection-start-line="355" selection-start-column="56" selection-end-line="355" selection-end-column="56" />
               <folding>
                 <element signature="e#0#41#0" expanded="false" />
               </folding>
@@ -116,7 +116,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-3" />
+    <option name="x" value="-7" />
     <option name="y" value="7" />
     <option name="width" value="1351" />
     <option name="height" value="690" />
@@ -136,7 +136,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -149,6 +148,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -287,14 +287,15 @@
       <workItem from="1530134303217" duration="3823000" />
       <workItem from="1530147330313" duration="4926000" />
       <workItem from="1530152797307" duration="277000" />
+      <workItem from="1530233758751" duration="4280000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119959000" />
+    <option name="totallyTimeSpent" value="124239000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3" y="7" width="1351" height="690" extended-state="0" />
+    <frame x="-7" y="7" width="1351" height="690" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15955056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -773,8 +774,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RedBlackTree.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="83" column="35" lean-forward="true" selection-start-line="83" selection-start-column="35" selection-end-line="83" selection-end-column="35" />
+        <state relative-caret-position="120">
+          <caret line="355" column="56" lean-forward="true" selection-start-line="355" selection-start-column="56" selection-end-line="355" selection-end-column="56" />
           <folding>
             <element signature="e#0#41#0" expanded="false" />
           </folding>

@@ -29,7 +29,8 @@ $(document).ready(function(){
     });
 
     $('#display').on("click",function(){
-        console.log(BFS(redBlack.root));
+        display(redBlack.root);
+        //console.log(BFS(redBlack.root));
         //inOrder(redBlack.root);
     });
 });
@@ -93,24 +94,6 @@ function BFS(node){
         }
     }
     return res;
-    //Sample Queue
-    //============
-    /*var queue = [];
-    queue.push(2);
-    queue.push(5);
-    queue.push(8);
-    queue.push(12);
-    queue.push(15);
-    console.log(queue);
-    let head;
-    for(let i = 0; i < queue.length; i++){
-        head = queue.shift();
-        if(head !== undefined) {
-            i = -1;
-            console.log(head, "length: "+queue.length);
-        }
-    }
-    console.log(queue);*/
 }
 
 //Node Object
@@ -355,15 +338,53 @@ RBT.prototype.leftRotate = function(node) {
 //redBlack.insert(111);
 //inOrder(redBlack.root);
 
-var elem = document.getElementById('draw-shapes');
-var getWidth = document.getElementById("draw-shapes").offsetWidth;
-var params = { width: getWidth, height: 1500 };
-var two = new Two(params).appendTo(elem);
+let elem = document.getElementById('draw-shapes');
+let getWidth = document.getElementById("draw-shapes").offsetWidth;
+let params = { width: getWidth, height: 1500 };
+let two = new Two(params).appendTo(elem);
+const primeX = Math.round(document.getElementById('draw-shapes').offsetWidth/2);
+const primeY = 35;
+const secondary = 50;
+const radius = 25;
+function display(node){
+    two.clear();
+    two.update();
+    let nodesToGenerateArray = BFS(node);
+    for(let i = 0; i < nodesToGenerateArray.length; i++){
+        if(i === 0){
+            let circle = two.makeCircle(primeX, primeY, radius);
+            circle.fill = nodesToGenerateArray[0].color;
+            let text = two.makeText(nodesToGenerateArray[0].value,primeX,primeY);
+            if(circle.fill === black)
+                text.fill = 'white';
+        }
+        if(i === 1 || i === 2){
+            if(nodesToGenerateArray[i].value <= nodesToGenerateArray[0].value){
+                let circle = two.makeCircle(primeX-secondary, primeY+secondary, radius);
+                circle.fill = nodesToGenerateArray[i].color;
+                let text = two.makeText(nodesToGenerateArray[i].value,primeX-secondary,primeY+secondary);
+                if(circle.fill === red)
+                    text.fill = 'white';
+            }else{
+                let circle = two.makeCircle(primeX+secondary, primeY+secondary, radius);
+                circle.fill = nodesToGenerateArray[i].color;
+                let text = two.makeText(nodesToGenerateArray[i].value,primeX+secondary,primeY+secondary);
+                if(circle.fill === red)
+                    text.fill = 'white';
+            }
 
-var circle = two.makeCircle(Math.round(document.getElementById('draw-shapes').offsetWidth/2), 35, 25);
-circle.fill = 'red';
+        }
 
-two.update();
+    }
+    two.update();
+}
+
+
+
+//var circle = two.makeCircle(Math.round(document.getElementById('draw-shapes').offsetWidth/2), 35, 25);
+//circle.fill = 'red';
+
+//two.update();
 
 
 
@@ -385,3 +406,22 @@ two.update();
 //         alert("Doesn't Work");
 //     }
 // };
+
+//Sample Queue
+//============
+/*var queue = [];
+queue.push(2);
+queue.push(5);
+queue.push(8);
+queue.push(12);
+queue.push(15);
+console.log(queue);
+let head;
+for(let i = 0; i < queue.length; i++){
+    head = queue.shift();
+    if(head !== undefined) {
+        i = -1;
+        console.log(head, "length: "+queue.length);
+    }
+}
+console.log(queue);*/
