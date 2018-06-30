@@ -7,13 +7,13 @@ let redBlack = new RBT();
 $(document).ready(function(){
     $('#insert').on('input', function(){ //html insert function
         let text = $('#insert').val();
-        let display = $('#output');
+        let displayButton = $('#output');
         text = parseInt(text, 10); //remove leading zeros
         if(isNaN(text)){ //check if input is not a number
-            display.text(0);
+            displayButton.text(0);
         }
         else{
-            display.text(text);
+            displayButton.text(text);
         }
     });
 
@@ -346,9 +346,21 @@ const primeX = Math.round(document.getElementById('draw-shapes').offsetWidth/2);
 const primeY = 35;
 const secondary = 50;
 const radius = 25;
+
+function CircleObj(circle, value){
+    this.circle = circle;
+    this.getX = function(){
+        return this.circle._translation.x;
+    };
+    this.getY = function(){
+        return this.circle._translation.y;
+    };
+}
+
 function display(node){
     two.clear();
     two.update();
+    let circleObjArray = [];
     let nodesToGenerateArray = BFS(node);
     for(let i = 0; i < nodesToGenerateArray.length; i++){
         if(i === 0){
@@ -357,22 +369,26 @@ function display(node){
             let text = two.makeText(nodesToGenerateArray[0].value,primeX,primeY);
             if(circle.fill === black)
                 text.fill = 'white';
+            console.log(nodesToGenerateArray[i]);
+            circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i].value));
         }
-        if(i === 1 || i === 2){
-            if(nodesToGenerateArray[i].value <= nodesToGenerateArray[0].value){
-                let circle = two.makeCircle(primeX-secondary, primeY+secondary, radius);
-                circle.fill = nodesToGenerateArray[i].color;
-                let text = two.makeText(nodesToGenerateArray[i].value,primeX-secondary,primeY+secondary);
-                if(circle.fill === red)
-                    text.fill = 'white';
-            }else{
-                let circle = two.makeCircle(primeX+secondary, primeY+secondary, radius);
-                circle.fill = nodesToGenerateArray[i].color;
-                let text = two.makeText(nodesToGenerateArray[i].value,primeX+secondary,primeY+secondary);
-                if(circle.fill === red)
-                    text.fill = 'white';
-            }
+        else{
+            if (nodesToGenerateArray[i].value <= nodesToGenerateArray[0].value) {
 
+                let circle = two.makeCircle(primeX - secondary, primeY + secondary, radius);
+                circle.fill = nodesToGenerateArray[i].color;
+                let text = two.makeText(nodesToGenerateArray[i].value, primeX - secondary, primeY + secondary);
+                if (circle.fill === black)
+                    text.fill = 'white';
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i].value));
+            } else {
+                let circle = two.makeCircle(primeX + secondary, primeY + secondary, radius);
+                circle.fill = nodesToGenerateArray[i].color;
+                let text = two.makeText(nodesToGenerateArray[i].value, primeX + secondary, primeY + secondary);
+                if (circle.fill === black)
+                    text.fill = 'white';
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i].value));
+            }
         }
 
     }
