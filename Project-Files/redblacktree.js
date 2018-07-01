@@ -75,13 +75,23 @@ function getSize(node){
     return count;
 }
 
+//Find node depth level
+function getDepth(node){
+    let depth = 0;
+    while(node.parent !== null){
+        node = node.parent;
+        depth++;
+    }
+    return depth;
+}
+
 //BFS Traversal
 function BFS(node){
     let bfs = [];
     let res = [];
     let size = getSize(node);
     if(size !== 0 ){
-        res.push(node);
+        res.push([node, getDepth(node)]);
         while(res.length !== size){
             if(node.left !== null){
                 bfs.push(node.left);
@@ -90,7 +100,7 @@ function BFS(node){
                 bfs.push(node.right);
             }
             node = bfs.shift();
-            res.push(node);
+            res.push([node, getDepth(node)]);
         }
     }
     return res;
@@ -309,34 +319,7 @@ RBT.prototype.leftRotate = function(node) {
     }
 };
 
-//let redBlack = new RBT();
-// redBlack.insert(50);
-// redBlack.insert(45);
-// redBlack.insert(55);
-// redBlack.insert(48);
-// redBlack.insert(35);
-// redBlack.insert(52);
-// redBlack.insert(60);
-// redBlack.insert(20);
 
-// redBlack.insert(50);
-// redBlack.insert(100);
-// redBlack.insert(25);
-// redBlack.insert(250);
-// redBlack.insert(175);
-// redBlack.insert(120);
-// redBlack.insert(200);
-// redBlack.insert(225);
-// redBlack.insert(240);
-// redBlack.insert(235);
-// redBlack.insert(238);
-//
-//
-//
-//redBlack.insert(1);
-//redBlack.insert(11);
-//redBlack.insert(111);
-//inOrder(redBlack.root);
 
 let elem = document.getElementById('draw-shapes');
 let getWidth = document.getElementById("draw-shapes").offsetWidth;
@@ -374,33 +357,29 @@ function display(node){
     for(let i = 0; i < nodesToGenerateArray.length; i++){
         if(i === 0){
             let circle = two.makeCircle(primeX, primeY, radius);
-            circle.fill = nodesToGenerateArray[0].color;
-            let text = two.makeText(nodesToGenerateArray[0].value, primeX, primeY);
+            circle.fill = nodesToGenerateArray[0][0].color;
+            let text = two.makeText(nodesToGenerateArray[0][0].value, primeX, primeY);
             if(circle.fill === black)
                 text.fill = 'white';
-            circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i]));
+            circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]));
         }
         else{
-            if (nodesToGenerateArray[i].value <= nodesToGenerateArray[i].parent.value) {
-                let coordinates = findParent(circleObjArray, nodesToGenerateArray[i].parent);
-                console.log(coordinates);
+            if (nodesToGenerateArray[i][0].value <= nodesToGenerateArray[i][0].parent.value) {
+                let coordinates = findParent(circleObjArray, nodesToGenerateArray[i][0].parent);
                 let circle = two.makeCircle(coordinates[0] - secondary, coordinates[1] + secondary, radius);
-                console.log(circle._translation.x,circle._translation.y);
-                circle.fill = nodesToGenerateArray[i].color;
-                let text = two.makeText(nodesToGenerateArray[i].value, coordinates[0] - secondary, coordinates[1] + secondary);
+                circle.fill = nodesToGenerateArray[i][0].color;
+                let text = two.makeText(nodesToGenerateArray[i][0].value, coordinates[0] - secondary, coordinates[1] + secondary);
                 if (circle.fill === black)
                     text.fill = 'white';
-                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i]));
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]));
             } else {
-                let coordinates = findParent(circleObjArray, nodesToGenerateArray[i].parent);
-                // console.log(coordinates);
+                let coordinates = findParent(circleObjArray, nodesToGenerateArray[i][0].parent);
                 let circle = two.makeCircle(coordinates[0] + secondary, coordinates[1] + secondary, radius);
-                //console.log(circle._translation.x,circle._translation.y);
-                circle.fill = nodesToGenerateArray[i].color;
-                let text = two.makeText(nodesToGenerateArray[i].value, coordinates[0] + secondary, coordinates[1] + secondary);
+                circle.fill = nodesToGenerateArray[i][0].color;
+                let text = two.makeText(nodesToGenerateArray[i][0].value, coordinates[0] + secondary, coordinates[1] + secondary);
                 if (circle.fill === black)
                     text.fill = 'white';
-                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i]));
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]));
             }
         }
 
@@ -454,3 +433,32 @@ for(let i = 0; i < queue.length; i++){
     }
 }
 console.log(queue);*/
+
+//let redBlack = new RBT();
+// redBlack.insert(50);
+// redBlack.insert(45);
+// redBlack.insert(55);
+// redBlack.insert(48);
+// redBlack.insert(35);
+// redBlack.insert(52);
+// redBlack.insert(60);
+// redBlack.insert(20);
+
+// redBlack.insert(50);
+// redBlack.insert(100);
+// redBlack.insert(25);
+// redBlack.insert(250);
+// redBlack.insert(175);
+// redBlack.insert(120);
+// redBlack.insert(200);
+// redBlack.insert(225);
+// redBlack.insert(240);
+// redBlack.insert(235);
+// redBlack.insert(238);
+//
+//
+//
+//redBlack.insert(1);
+//redBlack.insert(11);
+//redBlack.insert(111);
+//inOrder(redBlack.root);
