@@ -345,32 +345,46 @@ let two = new Two(params).appendTo(elem);
 
 function display(node){
     const primeX = Math.round(document.getElementById('draw-shapes').offsetWidth/2);
-    const primeY = 35;
-    const radius = 25;
+    const primeY = 55;
+    let rootCircle;
+    let radius = 25;
     two.clear();
     two.update();
     let circleObjArray = [];
     let nodesToGenerateArray = BFS(node);
-    if(nodesToGenerateArray.length > 0){
-        let circle = two.makeCircle(primeX, primeY, radius);
-        circle.fill = nodesToGenerateArray[0][0].color;
+    generateRoot();
+    function generateRoot() {
+        rootCircle = two.makeCircle(primeX, primeY, radius);
+        rootCircle.fill = nodesToGenerateArray[0][0].color;
         let text = two.makeText(nodesToGenerateArray[0][0].value, primeX, primeY);
-        if (circle.fill === black)
+        if (rootCircle.fill === black)
             text.fill = 'white';
-        circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[0][0]));
+        circleObjArray.push(new CircleObj(rootCircle, nodesToGenerateArray[0][0]));
     }
-
-    function calculateMultiplier(depth){
-        let multiplier = 80;
+    function calculateMultiplier(depth){ //continue from here
+        let std = 150;
         if(nodesToGenerateArray.length <= 3){
-            return multiplier;
-        }else if(nodesToGenerateArray.length > 3 && nodesToGenerateArray.length < 7){
+            return 60;
+        }else if(nodesToGenerateArray.length > 3 && nodesToGenerateArray.length <= 7){
             if(depth === 1){
-                return Math.round(multiplier*1.667);
+                return Math.round(std);
             }else if(depth === 2){
-                return multiplier;
+                return Math.round(std/2);
             }else if(depth === 3){
-                return Math.round(multiplier*.75);
+                return Math.round(std/4);
+            }
+        }else if(nodesToGenerateArray.length > 7 && nodesToGenerateArray.length <= 15){
+            radius = 20;
+            two.remove(rootCircle);
+            generateRoot();
+            if(depth === 1){
+                return Math.round(std);
+            }else if(depth === 2){ //change radius, make it smaller
+                return Math.round(std/2); //put std/x into for loop
+            }else if(depth === 3){ //loop for loop based on depth, i.e. let i = 1; i <= 4 which is depth
+                return Math.round(std/4);
+            }else if(depth === 4){
+                return Math.round(std/8);
             }
         }
     }
