@@ -144,7 +144,7 @@ RBT.prototype.insert = function(value){
         }
         else{
             newNode.parent = temp;
-            if(!temp.right){ //if value is larger than current add to right
+            if(!temp.right){ //if value is larger or equal than current add to right
                 temp.right = newNode;
                 break;
             }
@@ -331,11 +331,18 @@ function CircleObj(circle, node, text){
     };
 }
 
-function findParent(circleObjArray, parent){
+function findParentCircleNode(circleObjArray, parent){
     for(let i = 0; i < circleObjArray.length; i++){
         if(circleObjArray[i].node === parent){
+            return circleObjArray[i]; //return [circleObjArray[i].getX(), circleObjArray[i].getY()];
+        }
+    }
+}
+
+function findCircleNode(circleObjArray, node){
+    for(let i = 0; i < circleObjArray.length; i++){
+        if(circleObjArray[i].node === node){
             return circleObjArray[i];
-            //return [circleObjArray[i].getX(), circleObjArray[i].getY()];
         }
     }
 }
@@ -345,7 +352,7 @@ let getWidth = document.getElementById("draw-shapes").offsetWidth;
 let params = { width: getWidth, height: 1500 };
 let two = new Two(params).appendTo(elem);
 
-function display(node){
+function display(root){
     const primeX = Math.round(document.getElementById('draw-shapes').offsetWidth/2);
     const primeY = 55;
     const radius = 25;
@@ -353,9 +360,8 @@ function display(node){
     two.clear();
     two.update();
     let circleObjArray = [];
-    let nodesToGenerateArray = BFS(node);
-    generateRoot();
-    function generateRoot(){
+    let nodesToGenerateArray = BFS(root);
+    (function generateRoot(){
         if(nodesToGenerateArray.length === 0 )
             return console.log("Empty tree...");
         let rootCircle = two.makeCircle(primeX, primeY, radius);
@@ -363,57 +369,88 @@ function display(node){
         let text = two.makeText(nodesToGenerateArray[0][0].value, primeX, primeY);
         if (rootCircle.fill === black)
             text.fill = 'white';
-        circleObjArray.push(new CircleObj(rootCircle, nodesToGenerateArray[0][0]), text);
+        circleObjArray.push(new CircleObj(rootCircle, nodesToGenerateArray[0][0], text));
+    }());
+
+    function adjustDisplay(currentNode, currentXCoordinate){
+        let tempRoot = root;
+
+        if(currentNode.value < currentNode.parent.value && currentNode.parent.value < currentNode.parent.parent.value)
+            return;
+        if(currentNode.value > currentNode.parent.value && currentNode.parent.value > currentNode.parent.parent.value)
+            return;
+
+        while(tempRoot !== undefined){
+            let tempRootCircleNode = findCircleNode(circleObjArray, tempRoot);
+            if(currentNode.value < tempRoot.value){
+                if(tempRootCircleNode.getX() === currentXCoordinate){
+                    let targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
+                    let x = targetCircleNode.getX();
+                    let y = targetCircleNode.getY();
+                    targetCircleNode.circle.translation.set((x - branch), y);
+                    targetCircleNode.text.translation.set((x - branch),y);
+                    break;
+                }else{
+                    tempRoot = tempRoot.left;
+                }
+            }else{
+                if(tempRootCircleNode.getX() === currentXCoordinate) {
+                    let targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
+                    let x = targetCircleNode.getX();
+                    let y = targetCircleNode.getY();
+                    targetCircleNode.circle.translation.set((x + branch), y);
+                    targetCircleNode.text.translation.set((x + branch),y);
+                    break;
+                }else{
+                    tempRoot = tempRoot.right;
+                }
+            }
+        }
     }
 
     for(let i = 1; i < nodesToGenerateArray.length; i++){
-        if (nodesToGenerateArray[i][0].value <= nodesToGenerateArray[i][0].parent.value){
-            let grandParentNodeCircle = findParent(circleObjArray,nodesToGenerateArray[i][0].parent.parent);
-            let parentNodeCircle = findParent(circleObjArray, nodesToGenerateArray[i][0].parent);
-            if(grandParentNodeCircle === undefined){
+        let parentNodeCircle = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
+        if (nodesToGenerateArray[i][0].value < nodesToGenerateArray[i][0].parent.value) {
+            if (nodesToGenerateArray[i][0].parent === root) {
                 let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
                 circle.fill = nodesToGenerateArray[i][0].color;
                 let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
                 if (circle.fill === black)
                     text.fill = 'white';
-                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0], text));
+            } else {
+                let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
+                circle.fill = nodesToGenerateArray[i][0].color;
+                let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
+                if (circle.fill === black)
+                    text.fill = 'white';
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0], text));
+                adjustDisplay(nodesToGenerateArray[i][0], (parentNodeCircle.getX() - branch));
             }
-            else{
-                let tempX = parentNodeCircle.getX() - branch;
-                if(grandParentNodeCircle.getX() === tempX){
-                    let x = parentNodeCircle.getX();
-                    let y = parentNodeCircle.getY();
-                    parentNodeCircle.circle.translation.set((x+branch),y);
-                    let parentNodeCircleText = parentNodeCircle.text;
-                    parentNodeCircleText = two.makeText(parentNodeCircle.node.value, (x+branch), y);
-                    if(parentNodeCircle.circle.fill === black)
-                        parentNodeCircleText.fill = 'white';
-                }else{
-                    let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
-                    circle.fill = nodesToGenerateArray[i][0].color;
-                    let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
-                    if (circle.fill === black)
-                        text.fill = 'white';
-                    circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
-                }
-            }
-        }else{
-            let grandParentNodeCircle = findParent(circleObjArray,nodesToGenerateArray[i][0].parent.parent);
-            let parentNodeCircle = findParent(circleObjArray, nodesToGenerateArray[i][0].parent);
-            if(grandParentNodeCircle === undefined){
+        } else {
+            if (nodesToGenerateArray[i][0].parent === root) {
                 let circle = two.makeCircle(parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY, radius);
                 circle.fill = nodesToGenerateArray[i][0].color;
                 let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY);
                 if (circle.fill === black)
                     text.fill = 'white';
-                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0], text));
+            } else {
+                let circle = two.makeCircle(parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY, radius);
+                circle.fill = nodesToGenerateArray[i][0].color;
+                let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY);
+                if (circle.fill === black)
+                    text.fill = 'white';
+                circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0], text));
+                adjustDisplay(nodesToGenerateArray[i][0], (parentNodeCircle.getX() + branch));
             }
+
         }
     }
     two.update();
 }
 /*
-let coordinates = findParent(circleObjArray, nodesToGenerateArray[i][0].parent);
+let coordinates = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
 let circle = two.makeCircle(coordinates[0] - multiplier, coordinates[1] + primeY, radius);
 circle.fill = nodesToGenerateArray[i][0].color;
 let text = two.makeText(nodesToGenerateArray[i][0].value, coordinates[0] - multiplier, coordinates[1] + primeY);
@@ -421,7 +458,7 @@ if (circle.fill === black)
     text.fill = 'white';
 circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]));*/
 
-/*let coordinates = findParent(circleObjArray, nodesToGenerateArray[i][0].parent);
+/*let coordinates = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
 let circle = two.makeCircle(coordinates[0] + multiplier, coordinates[1] + primeY, radius);
 circle.fill = nodesToGenerateArray[i][0].color;
 let text = two.makeText(nodesToGenerateArray[i][0].value, coordinates[0] + multiplier, coordinates[1] + primeY);
@@ -512,3 +549,48 @@ console.log(queue);*/
 //redBlack.insert(11);
 //redBlack.insert(111);
 //inOrder(redBlack.root);
+
+// most recent in display function
+/*
+if (nodesToGenerateArray[i][0].value <= nodesToGenerateArray[i][0].parent.value){
+    let grandParentNodeCircle = findParentCircleNode(circleObjArray,nodesToGenerateArray[i][0].parent.parent);
+    let parentNodeCircle = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
+    if(grandParentNodeCircle === undefined){
+        let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
+        circle.fill = nodesToGenerateArray[i][0].color;
+        let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
+        if (circle.fill === black)
+            text.fill = 'white';
+        circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
+    }
+    else{
+        let tempX = parentNodeCircle.getX() - branch;
+        if(grandParentNodeCircle.getX() === tempX){
+            let x = parentNodeCircle.getX();
+            let y = parentNodeCircle.getY();
+            parentNodeCircle.circle.translation.set((x+branch),y);
+            let parentNodeCircleText = parentNodeCircle.text;
+            parentNodeCircleText = two.makeText(parentNodeCircle.node.value, (x+branch), y);
+            if(parentNodeCircle.circle.fill === black)
+                parentNodeCircleText.fill = 'white';
+        }else{
+            let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
+            circle.fill = nodesToGenerateArray[i][0].color;
+            let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
+            if (circle.fill === black)
+                text.fill = 'white';
+            circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
+        }
+    }
+}else{
+    let grandParentNodeCircle = findParentCircleNode(circleObjArray,nodesToGenerateArray[i][0].parent.parent);
+    let parentNodeCircle = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
+    if(grandParentNodeCircle === undefined){
+        let circle = two.makeCircle(parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY, radius);
+        circle.fill = nodesToGenerateArray[i][0].color;
+        let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY);
+        if (circle.fill === black)
+            text.fill = 'white';
+        circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
+    }
+}*/
