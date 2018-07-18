@@ -372,45 +372,61 @@ function display(root){
         circleObjArray.push(new CircleObj(rootCircle, nodesToGenerateArray[0][0], text));
     }());
 
-    function adjustDisplay(currentNode, currentXCoordinate){
+    function adjustDisplay(currentNode){
         let tempRoot = root;
         if(currentNode.value < currentNode.parent.value && currentNode.parent.value < currentNode.parent.parent.value)
             return;
         if(currentNode.value > currentNode.parent.value && currentNode.parent.value > currentNode.parent.parent.value)
             return;
-
-        console.log(currentNode.value);
+        let currentCircleNode = findCircleNode(circleObjArray, currentNode);
+        let currentBL = currentCircleNode.getX() - radius;
+        let currentBR = currentCircleNode.getX() + radius;
         while(tempRoot !== null){
             let tempRootCircleNode = findCircleNode(circleObjArray, tempRoot);
+            let boundaryL = tempRootCircleNode.getX() - Math.ceil(2 * radius);
+            let boundaryR = tempRootCircleNode.getX() + Math.ceil(2 * radius);
             if(currentNode.value < tempRoot.value){
-                if(tempRootCircleNode.getX() === currentXCoordinate){
+                if(currentBR >= boundaryL){
+                    console.log("1. current node:",currentNode.value);
                     let targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
-                    let x = targetCircleNode.getX();
-                    let y = targetCircleNode.getY();
-                    targetCircleNode.circle.translation.set((x - branch),y);
-                    targetCircleNode.text.translation.set((x - branch),y);
-                    let currentNodeCircle = findCircleNode(circleObjArray, currentNode);
-                    currentNodeCircle.circle.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
-                    currentNodeCircle.text.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
-                    if(currentNode.parent.left !== null){
-                        let leftNodeCircle = findCircleNode(circleObjArray, currentNode.parent.left);
-                        leftNodeCircle.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
-                        leftNodeCircle.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.ceil(Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX())*2)),
+                        targetCircleNode.getY());
+                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.ceil(Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX())*2)),
+                        targetCircleNode.getY());
+                    currentCircleNode.circle.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
+                    currentCircleNode.text.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
+                    if(tempRoot.left.left !== null){
+                        let sibling = findCircleNode(circleObjArray, tempRoot.left.left);
+                        sibling.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                        sibling.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
                     }
                     break;
                 }else{
                     tempRoot = tempRoot.left;
                 }
             }else{
-                if(tempRootCircleNode.getX() === currentXCoordinate) {
+                if(currentBL <= boundaryR){
+                    if(currentNode.value === 34){
+                        console.log('currentCircleNode:',currentCircleNode.node.value);
+                        console.log('tempRootCircleNode:',tempRootCircleNode.node.value);
+                        console.log('root x coordinate:',tempRootCircleNode.getX());
+                        console.log('BoundryL:',boundaryL);
+                        console.log('BoundaryR:',boundaryR);
+                        console.log("currentBL:",currentBL);
+                        console.log('currentBR:',currentBR);
+                        console.log('tempRoot:',tempRoot.value);
+                        console.log('tempRoot.right:',tempRoot.right.value);
+                        console.log("2. current node:",currentNode.value);
+                        console.log('parent of current:',currentNode.parent.value);
+                    }
+
                     let targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
-                    let x = targetCircleNode.getX();
-                    let y = targetCircleNode.getY();
-                    targetCircleNode.circle.translation.set((x + branch), y);
-                    targetCircleNode.text.translation.set((x + branch),y);
-                    let currentNodeCircle = findCircleNode(circleObjArray, currentNode);
-                    currentNodeCircle.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
-                    currentNodeCircle.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.ceil(Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX())*2)),
+                        targetCircleNode.getY());
+                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.ceil(Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX())*2)),
+                        targetCircleNode.getY());
+                    currentCircleNode.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                    currentCircleNode.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
                     break;
                 }else{
                     tempRoot = tempRoot.right;
@@ -418,7 +434,6 @@ function display(root){
             }
         }
     }
-
     for(let i = 1; i < nodesToGenerateArray.length; i++){
         let parentNodeCircle = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
         if (nodesToGenerateArray[i][0].value < nodesToGenerateArray[i][0].parent.value) {
@@ -436,6 +451,10 @@ function display(root){
                 if (circle.fill === black)
                     text.fill = 'white';
                 circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0], text));
+                if(nodesToGenerateArray[i][0].value === 34){
+                    console.log('inside func:',nodesToGenerateArray[i][0].parent.value);
+                    console.log('coordinates for 34 node:',circle._translation.x,circle._translation.y);
+                }
                 adjustDisplay(nodesToGenerateArray[i][0], (parentNodeCircle.getX() - branch));
             }
         } else {
@@ -459,43 +478,21 @@ function display(root){
     }
     two.update();
 }
-/*
-let coordinates = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
-let circle = two.makeCircle(coordinates[0] - multiplier, coordinates[1] + primeY, radius);
-circle.fill = nodesToGenerateArray[i][0].color;
-let text = two.makeText(nodesToGenerateArray[i][0].value, coordinates[0] - multiplier, coordinates[1] + primeY);
-if (circle.fill === black)
-    text.fill = 'white';
-circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]));*/
-
-/*let coordinates = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
-let circle = two.makeCircle(coordinates[0] + multiplier, coordinates[1] + primeY, radius);
-circle.fill = nodesToGenerateArray[i][0].color;
-let text = two.makeText(nodesToGenerateArray[i][0].value, coordinates[0] + multiplier, coordinates[1] + primeY);
-if (circle.fill === black)
-    text.fill = 'white';
-circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]));*/
-
-//
-// redBlack.insert(1);
-// redBlack.insert(2);
-// redBlack.insert(3);
-// redBlack.insert(4);
-// redBlack.insert(5);
-// redBlack.insert(6);
-// redBlack.insert(7);
-// redBlack.insert(8);
-
-//var circle = two.makeCircle(Math.round(document.getElementById('draw-shapes').offsetWidth/2), 35, 25);
-//circle.fill = 'red';
-
-//two.update();
-
-
-
-
 
 // ----- Testing Area Below -----
+
+// let x = targetCircleNode.getX();
+// let y = targetCircleNode.getY();
+// targetCircleNode.circle.translation.set((x - branch), y);
+// targetCircleNode.text.translation.set((x - branch), y);
+// let currentNodeCircle = findCircleNode(circleObjArray, currentNode);
+// currentNodeCircle.circle.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
+// currentNodeCircle.text.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
+// if (currentNode.parent.left !== null) {
+//     let leftNodeCircle = findCircleNode(circleObjArray, currentNode.parent.left);
+//     leftNodeCircle.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+//     leftNodeCircle.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+// }
 
 // window.onload = function () {
 //
@@ -532,9 +529,9 @@ for(let i = 0; i < queue.length; i++){
 console.log(queue);*/
 
 //let redBlack = new RBT();
-// redBlack.insert(50);
-// redBlack.insert(45);
-// redBlack.insert(55);
+redBlack.insert(20);
+redBlack.insert(30);
+redBlack.insert(10);
 // redBlack.insert(48);
 // redBlack.insert(35);
 // redBlack.insert(52);
@@ -560,47 +557,39 @@ console.log(queue);*/
 //redBlack.insert(111);
 //inOrder(redBlack.root);
 
-// most recent in display function
-/*
-if (nodesToGenerateArray[i][0].value <= nodesToGenerateArray[i][0].parent.value){
-    let grandParentNodeCircle = findParentCircleNode(circleObjArray,nodesToGenerateArray[i][0].parent.parent);
-    let parentNodeCircle = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
-    if(grandParentNodeCircle === undefined){
-        let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
-        circle.fill = nodesToGenerateArray[i][0].color;
-        let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
-        if (circle.fill === black)
-            text.fill = 'white';
-        circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
-    }
-    else{
-        let tempX = parentNodeCircle.getX() - branch;
-        if(grandParentNodeCircle.getX() === tempX){
-            let x = parentNodeCircle.getX();
-            let y = parentNodeCircle.getY();
-            parentNodeCircle.circle.translation.set((x+branch),y);
-            let parentNodeCircleText = parentNodeCircle.text;
-            parentNodeCircleText = two.makeText(parentNodeCircle.node.value, (x+branch), y);
-            if(parentNodeCircle.circle.fill === black)
-                parentNodeCircleText.fill = 'white';
-        }else{
-            let circle = two.makeCircle(parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY, radius);
-            circle.fill = nodesToGenerateArray[i][0].color;
-            let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() - branch, parentNodeCircle.getY() + primeY);
-            if (circle.fill === black)
-                text.fill = 'white';
-            circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
-        }
-    }
-}else{
-    let grandParentNodeCircle = findParentCircleNode(circleObjArray,nodesToGenerateArray[i][0].parent.parent);
-    let parentNodeCircle = findParentCircleNode(circleObjArray, nodesToGenerateArray[i][0].parent);
-    if(grandParentNodeCircle === undefined){
-        let circle = two.makeCircle(parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY, radius);
-        circle.fill = nodesToGenerateArray[i][0].color;
-        let text = two.makeText(nodesToGenerateArray[i][0].value, parentNodeCircle.getX() + branch, parentNodeCircle.getY() + primeY);
-        if (circle.fill === black)
-            text.fill = 'white';
-        circleObjArray.push(new CircleObj(circle, nodesToGenerateArray[i][0]), text);
-    }
-}*/
+
+/*let tempRootCircleNode = findCircleNode(circleObjArray, tempRoot);
+            if(currentNode.value < tempRoot.value){
+                if(tempRootCircleNode.getX() === currentXCoordinate){
+                    let targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
+                    let x = targetCircleNode.getX();
+                    let y = targetCircleNode.getY();
+                    targetCircleNode.circle.translation.set((x - branch),y);
+                    targetCircleNode.text.translation.set((x - branch),y);
+                    let currentNodeCircle = findCircleNode(circleObjArray, currentNode);
+                    currentNodeCircle.circle.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
+                    currentNodeCircle.text.translation.set(targetCircleNode.getX() + branch, targetCircleNode.getY() + primeY);
+                    if(currentNode.parent.left !== null){
+                        let leftNodeCircle = findCircleNode(circleObjArray, currentNode.parent.left);
+                        leftNodeCircle.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                        leftNodeCircle.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                    }
+                    break;
+                }else{
+                    tempRoot = tempRoot.left;
+                }
+            }else{
+                if(tempRootCircleNode.getX() === currentXCoordinate) {
+                    let targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
+                    let x = targetCircleNode.getX();
+                    let y = targetCircleNode.getY();
+                    targetCircleNode.circle.translation.set((x + branch), y);
+                    targetCircleNode.text.translation.set((x + branch),y);
+                    let currentNodeCircle = findCircleNode(circleObjArray, currentNode);
+                    currentNodeCircle.circle.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                    currentNodeCircle.text.translation.set(targetCircleNode.getX() - branch, targetCircleNode.getY() + primeY);
+                    break;
+                }else{
+                    tempRoot = tempRoot.right;
+                }
+            }*/
