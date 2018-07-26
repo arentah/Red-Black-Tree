@@ -382,8 +382,10 @@ function display(root){
 
         if(currentNode.value < currentNode.parent.value && currentNode.parent.value < currentNode.parent.parent.value && centerRoot !== centerCurrent)
             return;
-        if(currentNode.value > currentNode.parent.value && currentNode.parent.value > currentNode.parent.parent.value && centerRoot !== centerCurrent)
+        if(currentNode.value > currentNode.parent.value && currentNode.parent.value > currentNode.parent.parent.value && centerRoot !== centerCurrent){
             return;
+        }
+
 
         while(tempRoot !== null){
             let tempRootCircleNode = findCircleNode(circleObjArray, tempRoot);
@@ -396,21 +398,25 @@ function display(root){
                         if(currentNode.value >= currentNode.parent.value && currentNode.parent.value >= currentNode.parent.parent.value){
                             targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
                         }else{
-                            let parent = findCircleNode(circleObjArray, tempRoot.parent);
-                            tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
-                                tempRootCircleNode.getY());
-                            tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
-                                tempRootCircleNode.getY());
-                            targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
-                            restructureDisplay(tempRootCircleNode, 'rightCase');
+                            if(currentNode.value >= root.value){
+                                let parent = findCircleNode(circleObjArray, tempRoot.parent);
+                                tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                    tempRootCircleNode.getY());
+                                tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                    tempRootCircleNode.getY());
+                                targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
+                                restructureDisplay(tempRootCircleNode, 'rightCase');
+                            }else{
+                                targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
+                            }
                         }
                     }else{
                         targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
                     }
                     targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
-                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX())*2),
+                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) * 2),
                         targetCircleNode.getY());
-                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX())*2),
+                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) * 2),
                         targetCircleNode.getY());
                     restructureDisplay(targetCircleNode, 'rightCase');
                     break;
@@ -424,13 +430,17 @@ function display(root){
                         if(currentNode.value < currentNode.parent.value && currentNode.parent.value < currentNode.parent.parent.value){
                             targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
                         }else{
-                            let parent = findCircleNode(circleObjArray, tempRoot.parent);
-                            tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
-                                tempRootCircleNode.getY());
-                            tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
-                                tempRootCircleNode.getY());
-                            targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
-                            restructureDisplay(tempRootCircleNode, 'leftCase');
+                            if(currentNode.value < root.value){
+                                let parent = findCircleNode(circleObjArray, tempRoot.parent);
+                                tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                    tempRootCircleNode.getY());
+                                tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                    tempRootCircleNode.getY());
+                                targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
+                                restructureDisplay(tempRootCircleNode, 'leftCase');
+                            }else{
+                                targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
+                            }
                         }
                     }else{
                         targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
@@ -584,17 +594,21 @@ for(let i = 0; i < queue.length; i++){
 console.log(queue);*/
 
 //let redBlack = new RBT();
-redBlack.insert(20);
-redBlack.insert(30);
-redBlack.insert(10);
-redBlack.insert(42);
-redBlack.insert(55);
-redBlack.insert(15);
-redBlack.insert(5);
+// redBlack.insert(50);
+// redBlack.insert(80);
+// redBlack.insert(40);
 // redBlack.insert(45);
-// redBlack.insert(48);
+// redBlack.insert(30);
+// redBlack.insert(20);
+// redBlack.insert(25);
+//redBlack.insert(70);
+// redBlack.insert(20);
+// redBlack.insert(10);
+// redBlack.insert(30);
 // redBlack.insert(35);
-// redBlack.insert(52);
+// redBlack.insert(5);
+// redBlack.insert(15);
+// redBlack.insert(12);
 // redBlack.insert(60);
 // redBlack.insert(20);
 
