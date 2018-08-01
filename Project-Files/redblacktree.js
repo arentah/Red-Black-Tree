@@ -1,9 +1,18 @@
 /**
  * Created by Aren on 10/14/2017.
  */
+// Global Variables
 let redBlack = new RBT();
+const red = 'red'; //changed from var
+const black = 'black'; //changed from var
 
-//On Document Load
+// Two.js init
+let elem = document.getElementById('draw-shapes');
+let getWidth = document.getElementById("draw-shapes").offsetWidth;
+let params = { width: getWidth, height: 1500 };
+let two = new Two(params).appendTo(elem);
+
+//On document load
 $(document).ready(function(){
     $('#insert').on('input', function(){ //html insert function
         let text = $('#insert').val();
@@ -30,14 +39,9 @@ $(document).ready(function(){
 
     $('#display').on("click",function(){
         display(redBlack.root);
-        //console.log(BFS(redBlack.root));
         //inOrder(redBlack.root);
     });
 });
-
-//Global Variables
-const red = 'red'; //changed from var
-const black = 'black'; //changed from var
 
 //Display InOrder Traversal
 function inOrder(node){
@@ -159,11 +163,12 @@ RBT.prototype.insert = function(value){
 
 //RBT Recheck
 RBT.prototype.reCheck = function(grand){
-    if(grand.parent != null) {
+    if(grand.parent !== null) {
         while (true) {
             let parent = grand.parent;
-            if (red == grand.color && red == parent.color)
+            if (red === grand.color && red === parent.color){
                 redBlack.insertionHelper(grand);
+            }
             else
                 break;
         }
@@ -175,7 +180,7 @@ RBT.prototype.insertionHelper = function(currentNode){
     let uncle;
     let gpa;
     let side;
-    if(parent.parent != null ){
+    if(parent.parent !== null ){
         gpa = parent.parent;
         if(parent.value < gpa.value){
             uncle = gpa.right;
@@ -186,8 +191,8 @@ RBT.prototype.insertionHelper = function(currentNode){
             side = 1;
         }
     }
-    if( (red == parent.color && null == uncle) || (red == parent.color && black == uncle.color) ){
-        if(side == 0){
+    if( (red === parent.color && null === uncle) || (red === parent.color && black === uncle.color) ){
+        if(side === 0){
             if(currentNode.value > parent.value){       //case 1
                 redBlack.leftRotate(currentNode);
                 redBlack.rightRotate(currentNode.left);
@@ -201,7 +206,7 @@ RBT.prototype.insertionHelper = function(currentNode){
             currentNode.parent.right.color = tempColor;
             redBlack.reCheck(gpa);
         }
-        else if(side == 1){
+        else if(side === 1){
             if(currentNode.value > parent.value){       //case 3
                 redBlack.leftRotate(currentNode);
             }
@@ -216,7 +221,7 @@ RBT.prototype.insertionHelper = function(currentNode){
             redBlack.reCheck(gpa);
         }
     }
-    else if(red == parent.color  && red == uncle.color){
+    else if(red === parent.color  && red === uncle.color){
         parent.color = black;
         uncle.color = black;
         gpa.color = red;
@@ -229,8 +234,9 @@ RBT.prototype.rightRotate = function(node){
         let parent = node.parent;
         let gpa = parent.parent;
         let nodeRightChild = node.right;
-        if(nodeRightChild != null){         //this scenario should never happen
+        if(nodeRightChild !== null){
             parent.left = nodeRightChild;
+            nodeRightChild.parent = parent;
         }
         else{
             parent.left = null;
@@ -244,7 +250,7 @@ RBT.prototype.rightRotate = function(node){
         let parent = node.parent; //node.parent;
         let gpa = parent.parent;
         let gpaParent;
-        if(gpa.parent != null){
+        if(gpa.parent !== null){
             gpaParent = gpa.parent;
             if(gpaParent.value < parent.value){
                 gpaParent.right = parent;
@@ -259,7 +265,7 @@ RBT.prototype.rightRotate = function(node){
             this.root = parent;
             parent.parent = null;
         }
-        if(parent.right != null){
+        if(parent.right !== null){
             gpa.left = parent.right;
             parent.right.parent = gpa;
         }
@@ -276,7 +282,7 @@ RBT.prototype.leftRotate = function(node) {
         let parent = node.parent;
         let gpa = parent.parent;
         let nodeLeftChild = node.left;
-        if(nodeLeftChild != null){             //this scenario should never happen
+        if(nodeLeftChild !== null){
             parent.right = nodeLeftChild;
             nodeLeftChild.parent = parent;
         }
@@ -292,7 +298,7 @@ RBT.prototype.leftRotate = function(node) {
         let parent = node.parent;//gpa.right;
         let gpa = parent.parent;
         let gpaParent;
-        if(gpa.parent != null){
+        if(gpa.parent !== null){
             gpaParent = gpa.parent;
             if(gpaParent.value < parent.value){
                 gpaParent.right = parent;
@@ -307,7 +313,7 @@ RBT.prototype.leftRotate = function(node) {
             this.root = parent;
             parent.parent = null;
         }
-        if(parent.left != null){
+        if(parent.left !== null){
             gpa.right = parent.left;
             parent.left.parent = gpa;
         }
@@ -348,11 +354,6 @@ function findCircleNode(circleObjArray, node){
     }
 }
 
-let elem = document.getElementById('draw-shapes');
-let getWidth = document.getElementById("draw-shapes").offsetWidth;
-let params = { width: getWidth, height: 1500 };
-let two = new Two(params).appendTo(elem);
-
 function display(root){
     const primeX = Math.round(document.getElementById('draw-shapes').offsetWidth/2);
     const primeY = 55;
@@ -380,13 +381,12 @@ function display(root){
         let tempRoot = root;
         let centerRoot = circleObjArray[0].getX();
 
-        if(currentNode.value < currentNode.parent.value && currentNode.parent.value < currentNode.parent.parent.value && centerRoot !== centerCurrent)
+        if(currentNode.value < currentNode.parent.value && currentNode.parent.value < currentNode.parent.parent.value && centerRoot !== centerCurrent){
             return;
+        }
         if(currentNode.value > currentNode.parent.value && currentNode.parent.value > currentNode.parent.parent.value && centerRoot !== centerCurrent){
             return;
         }
-
-
         while(tempRoot !== null){
             let tempRootCircleNode = findCircleNode(circleObjArray, tempRoot);
             let boundaryL = tempRootCircleNode.getX() - radius;
@@ -400,9 +400,9 @@ function display(root){
                         }else{
                             if(currentNode.value >= root.value){
                                 let parent = findCircleNode(circleObjArray, tempRoot.parent);
-                                tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) + branch),
                                     tempRootCircleNode.getY());
-                                tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.abs(parent.getX() - tempRootCircleNode.getX()) + branch),
                                     tempRootCircleNode.getY());
                                 targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
                                 restructureDisplay(tempRootCircleNode, 'rightCase');
@@ -414,9 +414,9 @@ function display(root){
                         targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
                     }
                     targetCircleNode = findCircleNode(circleObjArray, tempRoot.left);
-                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) * 2),
+                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) + branch),
                         targetCircleNode.getY());
-                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) * 2),
+                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) + branch),
                         targetCircleNode.getY());
                     restructureDisplay(targetCircleNode, 'rightCase');
                     break;
@@ -432,9 +432,9 @@ function display(root){
                         }else{
                             if(currentNode.value < root.value){
                                 let parent = findCircleNode(circleObjArray, tempRoot.parent);
-                                tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                tempRootCircleNode.text.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) + branch),
                                     tempRootCircleNode.getY());
-                                tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) * 2),
+                                tempRootCircleNode.circle.translation.set(tempRootCircleNode.getX() - (Math.abs(parent.getX() - tempRootCircleNode.getX()) + branch),
                                     tempRootCircleNode.getY());
                                 targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
                                 restructureDisplay(tempRootCircleNode, 'leftCase');
@@ -445,9 +445,9 @@ function display(root){
                     }else{
                         targetCircleNode = findCircleNode(circleObjArray, tempRoot.right);
                     }
-                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) * 2),
+                    targetCircleNode.text.translation.set(tempRootCircleNode.getX() + (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) + branch),
                         targetCircleNode.getY());
-                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) * 2),
+                    targetCircleNode.circle.translation.set(tempRootCircleNode.getX() + (Math.abs(tempRootCircleNode.getX() - targetCircleNode.getX()) + branch),
                         targetCircleNode.getY());
                     restructureDisplay(targetCircleNode, 'leftCase');
                     break;
@@ -594,14 +594,19 @@ for(let i = 0; i < queue.length; i++){
 console.log(queue);*/
 
 //let redBlack = new RBT();
-// redBlack.insert(50);
-// redBlack.insert(80);
-// redBlack.insert(40);
-// redBlack.insert(45);
-// redBlack.insert(30);
-// redBlack.insert(20);
-// redBlack.insert(25);
-//redBlack.insert(70);
+redBlack.insert(100);
+redBlack.insert(200);
+redBlack.insert(25);
+redBlack.insert(150);
+redBlack.insert(250);
+redBlack.insert(125);
+redBlack.insert(175);
+redBlack.insert(185);
+
+
+//console.log('\\n');
+//console.log(redBlack.root.value);
+//display(redBlack.root);
 // redBlack.insert(20);
 // redBlack.insert(10);
 // redBlack.insert(30);
